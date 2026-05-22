@@ -1,0 +1,66 @@
+#  overthinkos/bootc — the bootc bootable-container image family, split out of the
+#  main overthink repo (2026-05). Mounted as a git submodule at image/bootc.
+#
+#  This repo VENDORS NOTHING. It composes the canonical ov layers + the shared
+#  build-config entirely by GITHUB REFERENCE into github.com/overthinkos/overthink:
+#  every layer in image.yml is an `@github.com/...` ref, and build.yml +
+#  fedora-base.yml are remote includes. There is no duplicated config.
+#
+#  The debian/ubuntu pattern (NOT fedora's): every bootc image roots on an
+#  EXTERNAL upstream base URL (quay.io/fedora/fedora-bootc:43 and
+#  ghcr.io/ublue-os/…), so there is NO in-repo bootc base image to keep, and
+#  nothing in main consumes any image here. The only edge is bootc → main; main
+#  remote-includes nothing from this repo (zero main ↔ bootc coupling).
+#
+#  Builder source: bootc images root on external bases, so they inherit no
+#  builder map from a base — they pick up `defaults.builder` (below) which maps
+#  to fedora-builder. fedora-builder lives in the main repo's fedora-base.yml,
+#  remote-included here (the same way the fedora submodule sources its builder).
+#
+#  Tag strategy — three pins, each with a distinct reason:
+#    * v2026.141.1600 — the ecosystem layer tag. Every layer ref EXCEPT
+#      os-system-files/ujust, plus the build.yml file include. Must match
+#      fedora-base.yml's internal layer pins (shared refs rpmfusion +
+#      build-toolchain; CollectRemoteRefs rejects one ref at two versions).
+#    * v2026.141.2308 — the tag where fedora-base.yml first exists (it
+#      post-dates v2026.141.1600). Its internal layer refs are v2026.141.1600.
+#    * v2026.142.0552 — the fresh tag created by the bootc-extraction cutover.
+#      Carries the renamed os-system-files/ujust layers (/usr/share/bazzite/),
+#      after bazzite-ai → bazzite. Bazzite-exclusive refs → appear once each →
+#      no conflict with the other tags.
+#
+#  Directly buildable: `ov image build selkies-desktop-bootc --include-disabled`
+#  (the build verb defaults to this overthink.yml; all images ship enabled:false).
+#  From the parent repo: `ov -C image/bootc image build selkies-desktop-bootc
+#  --include-disabled`, or anywhere: `ov --repo overthinkos/bootc image build
+#  selkies-desktop-bootc --include-disabled`.
+version: 2026.141.1600
+defaults:
+    platform:
+        - linux/amd64
+    tag: auto
+    registry: ghcr.io/overthinkos
+    build:
+        - rpm
+    merge:
+        auto: false
+        max_mb: 128
+    # bootc images root on external bases (no builder map to inherit), so they
+    # fall through to defaults.builder. fedora-builder arrives via the
+    # fedora-base.yml remote include below.
+    builder:
+        cargo: fedora-builder
+        npm: fedora-builder
+        pixi: fedora-builder
+include:
+    # Local per-kind entries (bootc images + their bootc VM entities).
+    - image.yml
+    - vm.yml
+    # Shared build-config — distro.fedora + the rpm format template. No layer
+    # refs inside, so it pins to the ecosystem layer tag.
+    - '@github.com/overthinkos/overthink/build.yml:v2026.141.1600'
+    # Fedora base stack (fedora + fedora-builder + fedora-nonfree) — owned by the
+    # main repo. Brings fedora-builder into scope for the pixi/npm builds
+    # (selkies-desktop, openclaw). Pinned to the tag where the file exists; its
+    # internal layer refs are v2026.141.1600.
+    - '@github.com/overthinkos/overthink/fedora-base.yml:v2026.141.2308'

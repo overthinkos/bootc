@@ -1,0 +1,9 @@
+# Generated build artifacts (recreated by `ov image generate` / `ov image build`)
+.build/
+# Eval run scratch
+.eval/
+# VM / disk-image build outputs
+output/
+# Editor scratch
+*.swp
+*~

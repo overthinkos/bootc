@@ -1,0 +1,39 @@
+#  Per-kind file for vm entries — the bootc VM entities, split out of the main
+#  overthink repo (2026-05). Each is a kind:vm entity whose source.kind: bootc
+#  references the matching bootc image in image.yml. Build/run with:
+#    ov vm build <name> --transport containers-storage
+#    ov vm create <name> && ov vm start <name>
+#  (the underlying bootc image must be built enabled first via --include-disabled).
+version: 2026.141.1600
+vm:
+    aurora-bootc:
+        source:
+            kind: bootc
+            image: aurora
+        disk_size: 80 GiB
+        ram: 12G
+        cpu: 4
+    bazzite-bootc:
+        source:
+            kind: bootc
+            image: bazzite
+    openclaw-browser-bootc-bootc:
+        source:
+            kind: bootc
+            image: openclaw-browser-bootc
+        disk_size: 20 GiB
+        ram: 4G
+        cpu: 2
+        ssh:
+            user: root
+            port: 2222
+    selkies-desktop-bootc-bootc:
+        source:
+            kind: bootc
+            image: selkies-desktop-bootc
+        disk_size: 40 GiB
+        ram: 8G
+        cpu: 4
+        ssh:
+            user: root
+            port: 2250
