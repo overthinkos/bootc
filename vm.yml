@@ -17,16 +17,6 @@ vm:
         source:
             kind: bootc
             image: bazzite
-    openclaw-browser-bootc-bootc:
-        source:
-            kind: bootc
-            image: openclaw-browser-bootc
-        disk_size: 20 GiB
-        ram: 4G
-        cpu: 2
-        ssh:
-            user: root
-            port: 2222
     selkies-desktop-bootc-bootc:
         source:
             kind: bootc

@@ -8,8 +8,8 @@ of the main repo.
 
 | Kind | Entries |
 |---|---|
-| `image:` | `selkies-desktop-bootc` (Fedora bootc + Selkies streamed desktop — the canonical worked example), `bazzite` (ublue Bazzite NVIDIA AI/dev workstation), `aurora` (ublue Aurora DX + ov toolchain), `openclaw-browser-bootc` (Fedora bootc + OpenClaw gateway) |
-| `vm:` | the matching `kind: vm` bootc entities (`selkies-desktop-bootc-bootc`, `bazzite-bootc`, `aurora-bootc`, `openclaw-browser-bootc-bootc`) |
+| `image:` | `selkies-desktop-bootc` (Fedora bootc + Selkies streamed desktop — the canonical worked example), `bazzite` (ublue Bazzite NVIDIA AI/dev workstation), `aurora` (ublue Aurora DX + ov toolchain) |
+| `vm:` | the matching `kind: vm` bootc entities (`selkies-desktop-bootc-bootc`, `bazzite-bootc`, `aurora-bootc`) |
 
 All images ship `enabled: false` — build them with `--include-disabled`.
 

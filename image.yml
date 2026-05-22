@@ -58,26 +58,6 @@ image:
             - '@github.com/overthinkos/overthink/layers/copr-desktop:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/os-config:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/os-system-files:v2026.142.0552'
-    openclaw-browser-bootc:
-        enabled: false
-        base: quay.io/fedora/fedora-bootc:43
-        platform:
-            - linux/amd64
-        distro:
-            - fedora:43
-            - fedora
-        layer:
-            - '@github.com/overthinkos/overthink/layers/agent-forwarding:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/bootc-base:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/openclaw:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/pipewire:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/wayvnc:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/chrome-sway:v2026.141.1600'
-        port:
-            - 18789:18789
-            - 5900:5900
-            - 9222:9222
-            - 9224:9224
     selkies-desktop-bootc:
         enabled: false
         base: quay.io/fedora/fedora-bootc:43
