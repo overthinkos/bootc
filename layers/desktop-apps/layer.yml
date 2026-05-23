@@ -1,0 +1,13 @@
+layer:
+  name: desktop-apps
+  distro:
+    fedora:
+      package:
+        - btop
+        - chromium
+        - cloud-init
+        - cockpit
+        - keepassxc
+        - transmission
+        - vlc
+        - zsh

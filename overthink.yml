@@ -3,8 +3,9 @@
 #
 #  SINGLE-FILE config (2026-05 import-namespace cutover): every local entity
 #  (the bootc images + their bootc VM entities) is inlined here. This repo
-#  VENDORS NOTHING — every layer is an `@github.com/...` ref, and the shared
-#  build-config + the main repo's base entities arrive via `import:`.
+#  VENDORS its bootc-exclusive layers locally under layers/ (resolved via the
+#  discover: block); every shared layer is an `@github.com/...` ref, and the
+#  shared build-config + the main repo's base entities arrive via `import:`.
 #
 #  import: has two shapes —
 #    * flat string  → build.yml (shared distro/builder/init vocabulary), merged
@@ -21,19 +22,15 @@
 #  ghcr.io/ublue-os/…), so there is NO in-repo bootc base image to keep, and
 #  nothing in main consumes any image here.
 #
-#  Layer tag pins — two pins, each with a distinct reason:
-#    * v2026.141.1600 — the ecosystem layer tag. Every layer ref EXCEPT
-#      os-system-files/ujust, plus the build.yml file include and the `ov`
-#      namespace import is bound to the schema-version tag below.
-#    * v2026.142.0552 — the tag carrying the renamed os-system-files/ujust
-#      layers (/usr/share/bazzite/), after bazzite-ai → bazzite. Bazzite-
-#      exclusive refs → appear once each → no conflict with the other tags.
+#  Layer tag pins — shared layers are pulled from main at the ecosystem tag
+#  v2026.141.1600 (the build.yml file include and the `ov` namespace import use
+#  it too). The bootc-exclusive layers (including os-system-files/ujust, which
+#  ship /usr/share/bazzite/ content) are now vendored locally and carry no tag.
 #
-#  Directly buildable: `ov image build selkies-desktop-bootc --include-disabled`
-#  (the build verb defaults to this overthink.yml; all images ship enabled:false).
-#  From the parent repo: `ov -C image/bootc image build selkies-desktop-bootc
-#  --include-disabled`, or anywhere: `ov --repo overthinkos/bootc image build
-#  selkies-desktop-bootc --include-disabled`.
+#  Directly buildable: `ov image build selkies-desktop-bootc` (the build verb
+#  defaults to this overthink.yml). From the parent repo: `ov -C image/bootc
+#  image build selkies-desktop-bootc`, or anywhere: `ov --repo overthinkos/bootc
+#  image build selkies-desktop-bootc`.
 version: 2026.143.844
 defaults:
     platform:
@@ -60,9 +57,18 @@ import:
     # (from main's base.yml) into scope for the pixi/npm builds (selkies-desktop,
     # openclaw). bootc images fall through to defaults.builder → ov.fedora-builder.
     - ov: '@github.com/overthinkos/overthink:v2026.143.844'
+discover:
+    # Layers vendored locally by THIS repo — the bootc-exclusive layers
+    # (bootc-base, bootc-config, copr-desktop, desktop-apps, os-config,
+    # os-system-files, ujust, vr-streaming) relocated out of main's shared
+    # layers/. Bare layer names below resolve here; every shared layer (sshd,
+    # cuda, virtualization, selkies-desktop, rpmfusion, …) still arrives by
+    # @github ref into main.
+    layer:
+        - path: layers
+          recursive: true
 image:
     aurora:
-        enabled: false
         base: ghcr.io/ublue-os/aurora-dx-nvidia-open:stable-daily-43.20260305
         platform:
             - linux/amd64
@@ -71,12 +77,11 @@ image:
             - fedora
         layer:
             - '@github.com/overthinkos/overthink/layers/agent-forwarding:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/bootc-base:v2026.141.1600'
+            - bootc-base
             - '@github.com/overthinkos/overthink/layers/sshd:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/ov-full:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/golang:v2026.141.1600'
     bazzite:
-        enabled: false
         base: ghcr.io/ublue-os/bazzite-nvidia-open:stable-43.20260120.1
         platform:
             - linux/amd64
@@ -85,28 +90,27 @@ image:
             - fedora
         layer:
             - '@github.com/overthinkos/overthink/layers/agent-forwarding:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/bootc-base:v2026.141.1600'
+            - bootc-base
             - '@github.com/overthinkos/overthink/layers/build-toolchain:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/language-runtimes:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/ujust:v2026.142.0552'
+            - ujust
             - '@github.com/overthinkos/overthink/layers/dev-tools:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/github-actions:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/virtualization:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/kubernetes:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/docker-ce:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/google-cloud:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/vr-streaming:v2026.141.1600'
+            - vr-streaming
             - '@github.com/overthinkos/overthink/layers/cuda:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/devops-tools:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/grafana-tools:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/desktop-apps:v2026.141.1600'
+            - desktop-apps
             - '@github.com/overthinkos/overthink/layers/vscode:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/typst:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/copr-desktop:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/os-config:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/os-system-files:v2026.142.0552'
+            - copr-desktop
+            - os-config
+            - os-system-files
     selkies-desktop-bootc:
-        enabled: false
         base: quay.io/fedora/fedora-bootc:43
         platform:
             - linux/amd64
@@ -115,7 +119,7 @@ image:
             - fedora
         layer:
             - '@github.com/overthinkos/overthink/layers/agent-forwarding:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/bootc-base:v2026.141.1600'
+            - bootc-base
             - '@github.com/overthinkos/overthink/layers/rpmfusion:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/selkies-desktop:v2026.141.1600'
             - '@github.com/overthinkos/overthink/layers/tailscale:v2026.141.1600'
