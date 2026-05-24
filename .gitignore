@@ -1,5 +1,8 @@
 # Generated build artifacts (recreated by `ov image generate` / `ov image build`)
 .build/
+# Generated context-ignore files (podman reads .containerignore, docker .dockerignore)
+.containerignore
+.dockerignore
 # Eval run scratch
 .eval/
 # VM / disk-image build outputs
