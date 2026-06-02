@@ -1,13 +1,14 @@
 layer:
-  name: desktop-apps
-  distro:
-    fedora:
-      package:
-        - btop
-        - chromium
-        - cloud-init
-        - cockpit
-        - keepassxc
-        - transmission
-        - vlc
-        - zsh
+    version: 2026.144.1443
+    name: desktop-apps
+    distro:
+        fedora:
+            package:
+                - btop
+                - chromium
+                - cloud-init
+                - cockpit
+                - keepassxc
+                - transmission
+                - vlc
+                - zsh

@@ -8,8 +8,8 @@ single `overthink.yml` that imports the main repo under the `ov` namespace and
 
 - `/ov-distros:bootc-base`, `/ov-distros:bootc-config` — base composition for
   bootable images.
-- `/ov-distros:bazzite`, `/ov-distros:aurora` — the ublue-derived bootc images.
-- `/ov-selkies:selkies-desktop-bootc` — the streaming-desktop bootc VM image.
+- `/ov-distros:bazzite`, `/ov-distros:aurora` — the ublue-derived bootc images
+  (`bazzite` is the canonical bootc-VM worked example).
 - `/ov-vm:vm` — booting a bootc image under libvirt/QEMU.
 
 **Authoritative rules live in the `overthink` superproject's root `CLAUDE.md`**

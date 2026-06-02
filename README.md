@@ -8,31 +8,34 @@ of the main repo.
 
 | Kind | Entries |
 |---|---|
-| `image:` | `selkies-desktop-bootc` (Fedora bootc + Selkies streamed desktop — the canonical worked example), `bazzite` (ublue Bazzite NVIDIA AI/dev workstation), `aurora` (ublue Aurora DX + ov toolchain) |
-| `vm:` | the matching `kind: vm` bootc entities (`selkies-desktop-bootc-bootc`, `bazzite-bootc`, `aurora-bootc`) |
+| `image:` | `bazzite` (ublue Bazzite NVIDIA AI/dev workstation — the canonical worked example), `aurora` (ublue Aurora DX + ov toolchain) |
+| `vm:` | the matching `kind: vm` bootc entities (`bazzite-bootc`, `aurora-bootc`) |
 
 All images ship `enabled: false` — build them with `--include-disabled`.
 
-## Composition by reference — nothing is vendored
+## Composition — vendored bootc-exclusive layers + shared refs
 
-This repo contains **no layers, no build-config, and no base of its own**.
-Everything is pulled from `github.com/overthinkos/overthink` by **github
-reference**:
+This repo **vendors its bootc-exclusive layers locally** under `layers/`
+(resolved via the `discover:` block) and pulls everything else from
+`github.com/overthinkos/overthink` by **github reference**:
 
-- every layer in `image.yml` is an `@github.com/overthinkos/overthink/layers/<name>:<tag>` ref;
+- the bootc-exclusive layers (`bootc-base`, `bootc-config`, `copr-desktop`,
+  `desktop-apps`, `os-config`, `os-system-files`, `ujust`, `vr-streaming`) are
+  vendored here and carry no tag — bare layer names resolve locally;
+- every shared layer in `image.yml` is an
+  `@github.com/overthinkos/overthink/layers/<name>:<tag>` ref;
 - the shared build-config (`build.yml` — distro/builder/init, including the
-  `fedora` distro definition + the `rpm` format template) is a remote `include:`;
-- `fedora-base.yml` is a remote `include:` solely to bring `fedora-builder` into
-  scope (the pixi/npm builds in `selkies-desktop`/`openclaw` need a builder, and
-  bootc images root on external bases so they inherit no builder map).
+  `fedora` distro definition + the `rpm` format template) is a flat `import:`;
+- the main repo is mounted under the `ov` namespace via `import:`, bringing
+  `ov.fedora-builder` into scope — bootc images root on external bases so they
+  inherit no builder map and fall through to `defaults.builder → ov.fedora-builder`.
 
-### Three tag pins, each with a reason
+### Tag pins, each with a reason
 
 | Pinned | Tag | Why |
 |---|---|---|
-| Every layer except `os-system-files`/`ujust`; `build.yml` | `v2026.141.1600` | the ecosystem layer tag (must match `fedora-base.yml`'s internal layer pins) |
-| `fedora-base.yml` file include | `v2026.141.2308` | the tag where the file first exists; its internal layer refs are `v2026.141.1600` |
-| `os-system-files` + `ujust` | `v2026.142.0552` | the fresh tag carrying the renamed `/usr/share/bazzite/` paths (bazzite-ai → bazzite) |
+| Every shared `@github` layer; `build.yml`; the `ov` namespace import | `v2026.141.1600` (layers, `build.yml`) / `v2026.143.844` (`ov` namespace) | the ecosystem layer tag the shared refs pin to |
+| Vendored bootc-exclusive layers | _(none)_ | resolved locally via `discover:`, so no git pin |
 
 ## The debian/ubuntu pattern — no base in main, no coupling
 
@@ -47,13 +50,13 @@ debian/ubuntu).
 
 ```bash
 # Inside the submodule (the build verb defaults to overthink.yml):
-ov image build selkies-desktop-bootc --include-disabled
+ov image build bazzite --include-disabled
 
 # From the parent overthink repo:
-ov -C image/bootc image build selkies-desktop-bootc --include-disabled
+ov -C image/bootc image build bazzite --include-disabled
 
 # Standalone, against the published repo:
-ov --repo overthinkos/bootc image build selkies-desktop-bootc --include-disabled
+ov --repo overthinkos/bootc image build bazzite --include-disabled
 ```
 
 The first build resolves the upstream github references into `~/.cache/ov/repos/`

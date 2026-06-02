@@ -27,11 +27,10 @@
 #  it too). The bootc-exclusive layers (including os-system-files/ujust, which
 #  ship /usr/share/bazzite/ content) are now vendored locally and carry no tag.
 #
-#  Directly buildable: `ov image build selkies-desktop-bootc` (the build verb
-#  defaults to this overthink.yml). From the parent repo: `ov -C image/bootc
-#  image build selkies-desktop-bootc`, or anywhere: `ov --repo overthinkos/bootc
-#  image build selkies-desktop-bootc`.
-version: 2026.143.844
+#  Directly buildable: `ov image build bazzite` (the build verb defaults to
+#  this overthink.yml). From the parent repo: `ov -C image/bootc image build
+#  bazzite`, or anywhere: `ov --repo overthinkos/bootc image build bazzite`.
+version: 2026.144.1443
 defaults:
     platform:
         - linux/amd64
@@ -110,30 +109,6 @@ image:
             - copr-desktop
             - os-config
             - os-system-files
-    selkies-desktop-bootc:
-        base: quay.io/fedora/fedora-bootc:43
-        platform:
-            - linux/amd64
-        distro:
-            - fedora:43
-            - fedora
-        layer:
-            - '@github.com/overthinkos/overthink/layers/agent-forwarding:v2026.141.1600'
-            - bootc-base
-            - '@github.com/overthinkos/overthink/layers/rpmfusion:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/selkies-desktop:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/tailscale:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/keepassxc:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/dbus:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/layers/ov:v2026.141.1600'
-        port:
-            - 13000:3000
-            - 19222:9222
-            - 19224:9224
-        eval:
-            - command: test -x /usr/bin/labwc && test -x /usr/bin/google-chrome-stable && test -x /usr/bin/tailscale && test -x /usr/bin/keepassxc
-              id: selkies-desktop-bootc-binaries
-              exit_status: 0
 vm:
     aurora-bootc:
         source:
@@ -146,13 +121,3 @@ vm:
         source:
             kind: bootc
             image: bazzite
-    selkies-desktop-bootc-bootc:
-        source:
-            kind: bootc
-            image: selkies-desktop-bootc
-        disk_size: 40 GiB
-        ram: 8G
-        cpu: 4
-        ssh:
-            user: root
-            port: 2250
