@@ -1,7 +1,7 @@
 layer:
     version: 2026.144.1443
     name: bootc-config
-    capabilities:
+    capability:
         preserve_user: true
         needs_root_after_init: true
         init_system_hint: systemd
