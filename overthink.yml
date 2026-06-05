@@ -30,7 +30,7 @@
 #  Directly buildable: `ov image build bazzite` (the build verb defaults to
 #  this overthink.yml). From the parent repo: `ov -C image/bootc image build
 #  bazzite`, or anywhere: `ov --repo overthinkos/bootc image build bazzite`.
-version: 2026.156.1041
+version: 2026.156.1531
 defaults:
     platform:
         - linux/amd64
@@ -78,7 +78,7 @@ box:
             - '@github.com/overthinkos/overthink/candy/agent-forwarding:v2026.141.1600'
             - bootc-base
             - '@github.com/overthinkos/overthink/candy/sshd:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/candy/ov-full:v2026.141.1600'
+            - '@github.com/overthinkos/overthink/candy/ov:v2026.156.2017'
             - '@github.com/overthinkos/overthink/candy/golang:v2026.141.1600'
     bazzite:
         base: ghcr.io/ublue-os/bazzite-nvidia-open:stable-43.20260120.1
