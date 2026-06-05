@@ -1,4 +1,4 @@
-layer:
+candy:
     version: 2026.144.1443
     name: ujust
     description: Just task runner + ujust wrapper (Universal Blue convention)

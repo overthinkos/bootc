@@ -1,4 +1,4 @@
-layer:
+candy:
     version: 2026.144.1443
     name: copr-desktop
     description: COPR and external desktop packages (CoolerControl, Ghostty, Nerd Fonts, WinBoat)

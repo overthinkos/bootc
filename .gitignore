@@ -10,3 +10,7 @@ output/
 # Editor scratch
 *.swp
 *~
+
+# Migration rollback backups (ov migrate writes <file>.bak.<unix-ts>)
+*.bak
+*.bak.*
