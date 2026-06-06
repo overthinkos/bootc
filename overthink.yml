@@ -3,7 +3,7 @@
 #
 #  SINGLE-FILE config (2026-05 import-namespace cutover): every local entity
 #  (the bootc images + their bootc VM entities) is inlined here. This repo
-#  VENDORS its bootc-exclusive layers locally under layers/ (resolved via the
+#  VENDORS its bootc-exclusive layers locally under candy/ (resolved via the
 #  discover: block); every shared layer is an `@github.com/...` ref, and the
 #  shared build-config + the main repo's base entities arrive via `import:`.
 #
@@ -27,7 +27,7 @@
 #  it too). The bootc-exclusive layers (including os-system-files/ujust, which
 #  ship /usr/share/bazzite/ content) are now vendored locally and carry no tag.
 #
-#  Directly buildable: `ov image build bazzite` (the build verb defaults to
+#  Directly buildable: `ov box build bazzite` (the build verb defaults to
 #  this overthink.yml). From the parent repo: `ov -C image/bootc image build
 #  bazzite`, or anywhere: `ov --repo overthinkos/bootc image build bazzite`.
 version: 2026.156.1531
@@ -60,7 +60,7 @@ discover:
     # Layers vendored locally by THIS repo — the bootc-exclusive layers
     # (bootc-base, bootc-config, copr-desktop, desktop-apps, os-config,
     # os-system-files, ujust, vr-streaming) relocated out of main's shared
-    # layers/. Bare layer names below resolve here; every shared layer (sshd,
+    # candy/. Bare layer names below resolve here; every shared layer (sshd,
     # cuda, virtualization, selkies-desktop, rpmfusion, …) still arrives by
     # @github ref into main.
     - path: candy

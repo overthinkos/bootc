@@ -15,15 +15,15 @@ All images ship `enabled: false` — build them with `--include-disabled`.
 
 ## Composition — vendored bootc-exclusive layers + shared refs
 
-This repo **vendors its bootc-exclusive layers locally** under `layers/`
+This repo **vendors its bootc-exclusive layers locally** under `candy/`
 (resolved via the `discover:` block) and pulls everything else from
 `github.com/overthinkos/overthink` by **github reference**:
 
 - the bootc-exclusive layers (`bootc-base`, `bootc-config`, `copr-desktop`,
   `desktop-apps`, `os-config`, `os-system-files`, `ujust`, `vr-streaming`) are
   vendored here and carry no tag — bare layer names resolve locally;
-- every shared layer in `image.yml` is an
-  `@github.com/overthinkos/overthink/layers/<name>:<tag>` ref;
+- every shared layer in `box.yml` is an
+  `@github.com/overthinkos/overthink/candy/<name>:<tag>` ref;
 - the shared build-config (`build.yml` — distro/builder/init, including the
   `fedora` distro definition + the `rpm` format template) is a flat `import:`;
 - the main repo is mounted under the `ov` namespace via `import:`, bringing
@@ -50,7 +50,7 @@ debian/ubuntu).
 
 ```bash
 # Inside the submodule (the build verb defaults to overthink.yml):
-ov image build bazzite --include-disabled
+ov box build bazzite --include-disabled
 
 # From the parent overthink repo:
 ov -C image/bootc image build bazzite --include-disabled

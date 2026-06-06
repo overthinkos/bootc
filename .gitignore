@@ -1,4 +1,4 @@
-# Generated build artifacts (recreated by `ov image generate` / `ov image build`)
+# Generated build artifacts (recreated by `ov box generate` / `ov box build`)
 .build/
 # Generated context-ignore files (podman reads .containerignore, docker .dockerignore)
 .containerignore
