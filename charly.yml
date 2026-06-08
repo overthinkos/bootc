@@ -1,5 +1,5 @@
 #  overthinkos/bootc — the bootc bootable-container image family, split out of the
-#  main overthink repo (2026-05). Mounted as a git submodule at image/bootc.
+#  main opencharly repo (2026-05). Mounted as a git submodule at image/bootc.
 #
 #  SINGLE-FILE config (2026-05 import-namespace cutover): every local entity
 #  (the bootc images + their bootc VM entities) is inlined here. This repo
@@ -10,11 +10,11 @@
 #  import: has two shapes —
 #    * flat string  → build.yml (shared distro/builder/init vocabulary), merged
 #      into this repo's root namespace.
-#    * `ov: <ref>`  → the main overthink repo mounted under the `ov` namespace.
+#    * `charly: <ref>`  → the main opencharly repo mounted under the `charly` namespace.
 #      bootc images root on EXTERNAL upstream bases (no in-repo base to
 #      namespace), so the ONLY cross-repo entity ref is the builder: bootc
-#      images fall through to `defaults.builder` which maps to ov.fedora-builder
-#      (main's fedora-builder, from main's base.yml, via the `ov` namespace).
+#      images fall through to `defaults.builder` which maps to charly.fedora-builder
+#      (main's fedora-builder, from main's base.yml, via the `charly` namespace).
 #      There is no main → bootc coupling (main remote-includes nothing here).
 #
 #  The debian/ubuntu pattern (NOT fedora's): every bootc image roots on an
@@ -23,14 +23,14 @@
 #  nothing in main consumes any image here.
 #
 #  Layer tag pins — shared layers are pulled from main at the ecosystem tag
-#  v2026.141.1600 (the build.yml file include and the `ov` namespace import use
+#  v2026.141.1600 (the build.yml file include and the `charly` namespace import use
 #  it too). The bootc-exclusive layers (including os-system-files/ujust, which
 #  ship /usr/share/bazzite/ content) are now vendored locally and carry no tag.
 #
-#  Directly buildable: `ov box build bazzite` (the build verb defaults to
-#  this overthink.yml). From the parent repo: `ov -C image/bootc image build
-#  bazzite`, or anywhere: `ov --repo overthinkos/bootc image build bazzite`.
-version: 2026.156.1531
+#  Directly buildable: `charly box build bazzite` (the build verb defaults to
+#  this charly.yml). From the parent repo: `charly -C image/bootc image build
+#  bazzite`, or anywhere: `charly --repo overthinkos/bootc image build bazzite`.
+version: 2026.159.3
 defaults:
     platform:
         - linux/amd64
@@ -43,19 +43,19 @@ defaults:
         max_mb: 128
     # bootc images root on external bases (no builder map to inherit), so they
     # fall through to defaults.builder. fedora-builder lives in main's base.yml,
-    # reached under the `ov` namespace via the import below.
+    # reached under the `charly` namespace via the import below.
     builder:
-        cargo: ov.fedora-builder
-        npm: ov.fedora-builder
-        pixi: ov.fedora-builder
+        cargo: charly.fedora-builder
+        npm: charly.fedora-builder
+        pixi: charly.fedora-builder
 import:
     # Shared build-config vocabulary (distro.fedora + the rpm format template) —
     # flat root import. No layer refs inside, so it pins to the ecosystem tag.
-    - '@github.com/overthinkos/overthink/build.yml:v2026.141.1600'
-    # Main repo entities under the `ov` namespace — brings ov.fedora-builder
+    - '@github.com/overthinkos/overthink/build.yml:v2026.159.1458'
+    # Main repo entities under the `charly` namespace — brings charly.fedora-builder
     # (from main's base.yml) into scope for the pixi/npm builds (selkies-desktop,
-    # openclaw). bootc images fall through to defaults.builder → ov.fedora-builder.
-    - ov: '@github.com/overthinkos/overthink:v2026.143.844'
+    # openclaw). bootc images fall through to defaults.builder → charly.fedora-builder.
+    - charly: '@github.com/overthinkos/overthink:v2026.159.1458'
 discover:
     # Layers vendored locally by THIS repo — the bootc-exclusive layers
     # (bootc-base, bootc-config, copr-desktop, desktop-apps, os-config,
@@ -75,11 +75,11 @@ box:
             - fedora:43
             - fedora
         candy:
-            - '@github.com/overthinkos/overthink/candy/agent-forwarding:v2026.141.1600'
+            - '@github.com/overthinkos/overthink/candy/agent-forwarding:v2026.159.1458'
             - bootc-base
-            - '@github.com/overthinkos/overthink/candy/sshd:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/candy/ov:v2026.156.2017'
-            - '@github.com/overthinkos/overthink/candy/golang:v2026.141.1600'
+            - '@github.com/overthinkos/overthink/candy/sshd:v2026.159.1458'
+            - '@github.com/overthinkos/overthink/candy/charly:v2026.159.1458'
+            - '@github.com/overthinkos/overthink/candy/golang:v2026.159.1458'
     bazzite:
         base: ghcr.io/ublue-os/bazzite-nvidia-open:stable-43.20260120.1
         platform:
@@ -88,24 +88,24 @@ box:
             - fedora:43
             - fedora
         candy:
-            - '@github.com/overthinkos/overthink/candy/agent-forwarding:v2026.141.1600'
+            - '@github.com/overthinkos/overthink/candy/agent-forwarding:v2026.159.1458'
             - bootc-base
-            - '@github.com/overthinkos/overthink/candy/build-toolchain:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/candy/language-runtimes:v2026.141.1600'
+            - '@github.com/overthinkos/overthink/candy/build-toolchain:v2026.159.1458'
+            - '@github.com/overthinkos/overthink/candy/language-runtimes:v2026.159.1458'
             - ujust
-            - '@github.com/overthinkos/overthink/candy/dev-tools:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/candy/github-actions:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/candy/virtualization:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/candy/kubernetes:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/candy/docker-ce:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/candy/google-cloud:v2026.141.1600'
+            - '@github.com/overthinkos/overthink/candy/dev-tools:v2026.159.1458'
+            - '@github.com/overthinkos/overthink/candy/github-actions:v2026.159.1458'
+            - '@github.com/overthinkos/overthink/candy/virtualization:v2026.159.1458'
+            - '@github.com/overthinkos/overthink/candy/kubernetes:v2026.159.1458'
+            - '@github.com/overthinkos/overthink/candy/docker-ce:v2026.159.1458'
+            - '@github.com/overthinkos/overthink/candy/google-cloud:v2026.159.1458'
             - vr-streaming
-            - '@github.com/overthinkos/overthink/candy/cuda:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/candy/devops-tools:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/candy/grafana-tools:v2026.141.1600'
+            - '@github.com/overthinkos/overthink/candy/cuda:v2026.159.1458'
+            - '@github.com/overthinkos/overthink/candy/devops-tools:v2026.159.1458'
+            - '@github.com/overthinkos/overthink/candy/grafana-tools:v2026.159.1458'
             - desktop-apps
-            - '@github.com/overthinkos/overthink/candy/vscode:v2026.141.1600'
-            - '@github.com/overthinkos/overthink/candy/typst:v2026.141.1600'
+            - '@github.com/overthinkos/overthink/candy/vscode:v2026.159.1458'
+            - '@github.com/overthinkos/overthink/candy/typst:v2026.159.1458'
             - copr-desktop
             - os-config
             - os-system-files

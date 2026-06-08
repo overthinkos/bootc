@@ -1,4 +1,4 @@
-# Generated build artifacts (recreated by `ov box generate` / `ov box build`)
+# Generated build artifacts (recreated by `charly box generate` / `charly box build`)
 .build/
 # Generated context-ignore files (podman reads .containerignore, docker .dockerignore)
 .containerignore
@@ -11,7 +11,7 @@ output/
 *.swp
 *~
 
-# Migration rollback backups (ov migrate writes <file>.bak.<unix-ts>)
+# Migration rollback backups (charly migrate writes <file>.bak.<unix-ts>)
 *.bak
 *.bak.*
 
