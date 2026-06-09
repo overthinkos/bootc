@@ -52,7 +52,7 @@ import:
     # Main repo entities under the `charly` namespace — brings charly.fedora-builder
     # (from main's base.yml) into scope for the pixi/npm builds (selkies-desktop,
     # openclaw). bootc images fall through to defaults.builder → charly.fedora-builder.
-    - charly: '@github.com/overthinkos/overthink:v2026.160.0856'
+    - charly: '@github.com/overthinkos/overthink:v2026.160.2017'
 discover:
     - path: box
       recursive: true

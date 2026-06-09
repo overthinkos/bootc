@@ -7,8 +7,8 @@ box:
         - fedora:43
         - fedora
     candy:
-        - '@github.com/overthinkos/overthink/candy/agent-forwarding:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/agent-forwarding:v2026.160.2017'
         - bootc-base
-        - '@github.com/overthinkos/overthink/candy/sshd:v2026.160.0856'
-        - '@github.com/overthinkos/overthink/candy/charly:v2026.160.0856'
-        - '@github.com/overthinkos/overthink/candy/golang:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/sshd:v2026.160.2017'
+        - '@github.com/overthinkos/overthink/candy/charly:v2026.160.2017'
+        - '@github.com/overthinkos/overthink/candy/golang:v2026.160.2017'

@@ -5,6 +5,6 @@ candy:
     # @github ref. bootc-config is bootc-exclusive and vendored locally beside
     # this layer (resolved via this repo's discover: block).
     candy:
-        - '@github.com/overthinkos/overthink/candy/sshd:v2026.160.0856'
-        - '@github.com/overthinkos/overthink/candy/qemu-guest-agent:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/sshd:v2026.160.2017'
+        - '@github.com/overthinkos/overthink/candy/qemu-guest-agent:v2026.160.2017'
         - bootc-config
