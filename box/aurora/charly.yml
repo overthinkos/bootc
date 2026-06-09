@@ -1,0 +1,14 @@
+box:
+    name: aurora
+    base: ghcr.io/ublue-os/aurora-dx-nvidia-open:stable-daily-43.20260305
+    platform:
+        - linux/amd64
+    distro:
+        - fedora:43
+        - fedora
+    candy:
+        - '@github.com/overthinkos/overthink/candy/agent-forwarding:v2026.160.0856'
+        - bootc-base
+        - '@github.com/overthinkos/overthink/candy/sshd:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/charly:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/golang:v2026.160.0856'

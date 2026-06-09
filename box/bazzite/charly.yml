@@ -1,0 +1,30 @@
+box:
+    name: bazzite
+    base: ghcr.io/ublue-os/bazzite-nvidia-open:stable-43.20260120.1
+    platform:
+        - linux/amd64
+    distro:
+        - fedora:43
+        - fedora
+    candy:
+        - '@github.com/overthinkos/overthink/candy/agent-forwarding:v2026.160.0856'
+        - bootc-base
+        - '@github.com/overthinkos/overthink/candy/build-toolchain:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/language-runtimes:v2026.160.0856'
+        - ujust
+        - '@github.com/overthinkos/overthink/candy/dev-tools:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/github-actions:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/virtualization:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/kubernetes:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/docker-ce:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/google-cloud:v2026.160.0856'
+        - vr-streaming
+        - '@github.com/overthinkos/overthink/candy/cuda:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/devops-tools:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/grafana-tools:v2026.160.0856'
+        - desktop-apps
+        - '@github.com/overthinkos/overthink/candy/vscode:v2026.160.0856'
+        - '@github.com/overthinkos/overthink/candy/typst:v2026.160.0856'
+        - copr-desktop
+        - os-config
+        - os-system-files

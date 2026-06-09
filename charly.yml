@@ -30,7 +30,7 @@
 #  Directly buildable: `charly box build bazzite` (the build verb defaults to
 #  this charly.yml). From the parent repo: `charly -C image/bootc image build
 #  bazzite`, or anywhere: `charly --repo overthinkos/bootc image build bazzite`.
-version: 2026.159.1912
+version: 2026.160.1301
 defaults:
     platform:
         - linux/amd64
@@ -49,66 +49,15 @@ defaults:
         npm: charly.fedora-builder
         pixi: charly.fedora-builder
 import:
-    # Shared build-config vocabulary (distro.fedora + the rpm format template) —
-    # flat root import. No layer refs inside, so it pins to the ecosystem tag.
-    - '@github.com/overthinkos/overthink/build.yml:v2026.160.0856'
     # Main repo entities under the `charly` namespace — brings charly.fedora-builder
     # (from main's base.yml) into scope for the pixi/npm builds (selkies-desktop,
     # openclaw). bootc images fall through to defaults.builder → charly.fedora-builder.
     - charly: '@github.com/overthinkos/overthink:v2026.160.0856'
 discover:
-    # Layers vendored locally by THIS repo — the bootc-exclusive layers
-    # (bootc-base, bootc-config, copr-desktop, desktop-apps, os-config,
-    # os-system-files, ujust, vr-streaming) relocated out of main's shared
-    # candy/. Bare layer names below resolve here; every shared layer (sshd,
-    # cuda, virtualization, selkies-desktop, rpmfusion, …) still arrives by
-    # @github ref into main.
+    - path: box
+      recursive: true
     - path: candy
       recursive: true
-      manifest: candy.yml
-box:
-    aurora:
-        base: ghcr.io/ublue-os/aurora-dx-nvidia-open:stable-daily-43.20260305
-        platform:
-            - linux/amd64
-        distro:
-            - fedora:43
-            - fedora
-        candy:
-            - '@github.com/overthinkos/overthink/candy/agent-forwarding:v2026.160.0856'
-            - bootc-base
-            - '@github.com/overthinkos/overthink/candy/sshd:v2026.160.0856'
-            - '@github.com/overthinkos/overthink/candy/charly:v2026.160.0856'
-            - '@github.com/overthinkos/overthink/candy/golang:v2026.160.0856'
-    bazzite:
-        base: ghcr.io/ublue-os/bazzite-nvidia-open:stable-43.20260120.1
-        platform:
-            - linux/amd64
-        distro:
-            - fedora:43
-            - fedora
-        candy:
-            - '@github.com/overthinkos/overthink/candy/agent-forwarding:v2026.160.0856'
-            - bootc-base
-            - '@github.com/overthinkos/overthink/candy/build-toolchain:v2026.160.0856'
-            - '@github.com/overthinkos/overthink/candy/language-runtimes:v2026.160.0856'
-            - ujust
-            - '@github.com/overthinkos/overthink/candy/dev-tools:v2026.160.0856'
-            - '@github.com/overthinkos/overthink/candy/github-actions:v2026.160.0856'
-            - '@github.com/overthinkos/overthink/candy/virtualization:v2026.160.0856'
-            - '@github.com/overthinkos/overthink/candy/kubernetes:v2026.160.0856'
-            - '@github.com/overthinkos/overthink/candy/docker-ce:v2026.160.0856'
-            - '@github.com/overthinkos/overthink/candy/google-cloud:v2026.160.0856'
-            - vr-streaming
-            - '@github.com/overthinkos/overthink/candy/cuda:v2026.160.0856'
-            - '@github.com/overthinkos/overthink/candy/devops-tools:v2026.160.0856'
-            - '@github.com/overthinkos/overthink/candy/grafana-tools:v2026.160.0856'
-            - desktop-apps
-            - '@github.com/overthinkos/overthink/candy/vscode:v2026.160.0856'
-            - '@github.com/overthinkos/overthink/candy/typst:v2026.160.0856'
-            - copr-desktop
-            - os-config
-            - os-system-files
 vm:
     aurora-bootc:
         source:
